@@ -1,0 +1,21 @@
+spring:
+  cloud:
+    function:
+      definition: producer
+      scan:
+        packages: org.example.producer.message
+    stream:
+      poller:
+        fixed-delay: 60000
+      kafka:
+        binder:
+          auto-add-partitions: true
+      bindings:
+        producer-out-0:
+          # Set spring cloud encoding content type
+          contentType: 'application/json'
+          destination : message-topic
+          producer:
+            partitionCount: 2
+            # Disable Kafka native encoding and use spring cloud encoding
+            nativeEncoding: false

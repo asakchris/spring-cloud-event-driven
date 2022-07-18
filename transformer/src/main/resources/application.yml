@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    function:
+      definition: transformer
+    scan:
+      packages: org.example.transformer.message
+    stream:
+      kafka:
+        binder:
+          auto-add-partitions: true
+      bindings:
+        transformer-in-0:
+          # Set spring cloud decoding content type
+          contentType: 'application/json'
+          destination : message-topic
+          group: transformer-cg
+          consumer:
+            # Set no of consumers in the consumer group
+            concurrency: 2
+            # Disable Kafka native decoding and use spring cloud encoding
+            nativeDecoding: false
+        transformer-out-0:
+          # Set spring cloud encoding content type
+          contentType: 'application/json'
+          destination : uppercase-message-topic
+          producer:
+            partitionCount: 2
+            # Disable Kafka native encoding and use spring cloud encoding
+            nativeEncoding: false

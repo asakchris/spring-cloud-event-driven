@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    function:
+      definition: consumer
+    scan:
+      packages: org.example.producer.message
+    stream:
+      bindings:
+        consumer-in-0:
+          # Set spring cloud decoding content type
+          contentType: 'application/json'
+          destination : uppercase-message-topic
+          group: consumer-cg
+          consumer:
+            # Set no of consumers in the consumer group
+            concurrency: 2
+            # Disable Kafka native decoding and use spring cloud encoding
+            nativeDecoding: false
